@@ -2,39 +2,348 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width-width, initial-scale=1.0">
-    <title>Math Solver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IB Mathematics AA HL - Question Bank</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 1000px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar a:hover {
+            background-color: #2980b9;
+        }
+        .content {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            font-size: 18px;
+        }
+        .question-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+        .question-container h3 {
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        .question-container p {
+            margin-bottom: 5px;
+        }
+        .difficulty-bar {
+            height: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .easy {
+            background-color: #6abf69; /* Green */
+        }
+        .medium {
+            background-color: #f7b731; /* Orange */
+            width: 50%;
+        }
+        .hard {
+            background-color: #e74c3c; /* Red */
+            width: 100%;
+        }
+        .pill {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background-color: #3498db;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .pill:hover {
+            background-color: #2980b9;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .input-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+        .solve-button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: #3498db;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .solve-button:hover {
+            background-color: #2980b9;
+        }
+        .result-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+        .result-container p {
+            margin: 5px 0;
+        }
+        .keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .key {
+            cursor: pointer;
+            font-size: 18px;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .key:hover {
+            background-color: #e0e0e0;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Math Expression Solver</h1>
-    <form id="solverForm">
-        <input type="text" id="expression" placeholder="Enter expression e.g. (2*x+1)^4">
-        <select id="operation">
-            <option value="expand">Expand</option>
-            <option value="simplify">Simplify</option>
-            <option value="factor">Factor</option>
-        </select>
-        <button type="button" onclick="solveExpression()">Solve</button>
-    </form>
-    <div id="result"></div>
+    <div class="container">
+        <div class="navbar">
+            <a href="#" onclick="showSolver()">Solver</a>
+            <a href="#" onclick="showQuestionBank()">Question Bank</a>
+        </div>
+        
+        <div id="solverSection">
+            <h1>Math Expression Solver</h1>
+            <div class="input-container">
+                <input type="text" id="expression" placeholder="Enter math expression e.g. (2*x+1)^4 or x^2-5*x+6" required>
+                <a class="pill" href="#" onclick="toggleKeyboard()">Show/Hide Math Symbols</a>
+            </div>
+            <div class="keyboard hidden">
+                <div class="key" onclick="addToExpression('^')">^</div>
+                <div class="key" onclick="addToExpression('/')">÷</div>
+                <div class="key" onclick="addToExpression('*')">×</div>
+                <div class="key" onclick="addToExpression('%')">%</div>
+                <div class="key" onclick="addToExpression('+')">+</div>
+                <div class="key" onclick="addToExpression('-')">-</div>
+                <div class="key" onclick="addToExpression('(')">(</div>
+                <div class="key" onclick="addToExpression(')')">)</div>
+                <div class="key" onclick="addToExpression('x')">x</div>
+                <div class="key" onclick="addToExpression('1')">1</div>
+                <div class="key" onclick="addToExpression('2')">2</div>
+                <div class="key" onclick="addToExpression('3')">3</div>
+                <div class="key" onclick="addToExpression('4')">4</div>
+                <div class="key" onclick="addToExpression('5')">5</div>
+                <div class="key" onclick="addToExpression('6')">6</div>
+                <div class="key" onclick="addToExpression('7')">7</div>
+                <div class="key" onclick="addToExpression('8')">8</div>
+                <div class="key" onclick="addToExpression('9')">9</div>
+                <div class="key" onclick="addToExpression('0')">0</div>
+                <div class="key" onclick="addToExpression('.')">.</div>
+            </div>
+            <button class="solve-button" type="button" onclick="solveExpression()">Solve</button>
+            <div class="result-container" id="resultContainer">
+              
+                <div id="result"></div>
+                
+                <div id="steps"></div>
+            </div>
+        </div>
+        
+        <div id="questionBankSection" class="content">
+            <h1>IB MATHEMATICS AA HL - QUESTION BANK</h1>
+            <div class="pill">
+                <select id="topicSelector" onchange="filterQuestions()">
+                    <option value="numberAlgebra">Number & Algebra</option>
+                    <option value="functions">Functions</option>
+                    <option value="geometryTrig">Geometry + Trigonometry</option>
+                    <option value="statsProbability">Stats + Probability</option>
+                    <option value="calculus">Calculus</option>
+                </select>
+                <select id="typeSelector" onchange="filterQuestions()">
+                    <option value="all">All</option>
+                    <option value="extendedResponse">Extended Response</option>
+                    <option value="shortAnswer">Short Answer</option>
+                </select>
+                <select id="paperSelector" onchange="filterQuestions()">
+                    <option value="all">All</option>
+                    <option value="paper1">Paper 1</option>
+                    <option value="paper2">Paper 2</option>
+                    <option value="paper3">Paper 3</option>
+                </select>
+                <select id="difficultySelector" onchange="filterQuestions()">
+                    <option value="all">All</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <div id="questionList" class="question-list"></div>
+        </div>
+    </div>
 
     <script>
-        async function solveExpression() {
+        // Dummy data for questions
+        let questions = [
+            { id: 1, type: "extendedResponse", paper: "paper1", difficulty: "easy", question: "Question 1 for Number & Algebra", topic: "numberAlgebra" },
+            { id: 2, type: "shortAnswer", paper: "paper2", difficulty: "medium", question: "Question 2 for Functions", topic: "functions" },
+            { id: 3, type: "extendedResponse", paper: "paper3", difficulty: "hard", question: "Question 3 for Geometry + Trigonometry", topic: "geometryTrig" },
+            { id: 4, type: "shortAnswer", paper: "paper1", difficulty: "medium", question: "Question 4 for Stats + Probability", topic: "statsProbability" },
+            { id: 5, type: "extendedResponse", paper: "paper2", difficulty: "easy", question: "Question 5 for Calculus", topic: "calculus" },
+            { id: 6, type: "shortAnswer", paper: "paper3", difficulty: "hard", question: "Question 6 for Number & Algebra", topic: "numberAlgebra" }
+        ];
+
+        // Function to filter and display questions based on selection
+        function filterQuestions() {
+            const topic = document.getElementById("topicSelector").value;
+            const type = document.getElementById("typeSelector").value;
+            const paper = document.getElementById("paperSelector").value;
+            const difficulty = document.getElementById("difficultySelector").value;
+
+            const filteredQuestions = questions.filter(question => 
+                (topic === "all" || question.topic === topic) &&
+                (type === "all" || question.type === type) &&
+                (paper === "all" || question.paper === paper) &&
+                (difficulty === "all" || question.difficulty === difficulty)
+            );
+
+            displayQuestions(filteredQuestions);
+        }
+
+        // Function to display filtered questions
+        function displayQuestions(filteredQuestions) {
+            const questionList = document.getElementById("questionList");
+            questionList.innerHTML = "";
+
+            filteredQuestions.forEach(question => {
+                const questionContainer = document.createElement("div");
+                questionContainer.classList.add("question-container");
+
+                const difficultyClass = question.difficulty === "easy" ? "easy" :
+                                       question.difficulty === "medium" ? "medium" :
+                                       "hard";
+
+                questionContainer.innerHTML = `
+                    <h3>${question.topic}</h3>
+                    <p>${question.question}</p>
+                    <div class="difficulty-bar ${difficultyClass}"></div>
+                `;
+
+                questionList.appendChild(questionContainer);
+            });
+        }
+
+        // Initial display of all questions
+        displayQuestions(questions);
+
+        // Functions to switch between sections
+        function showSolver() {
+            document.getElementById('solverSection').style.display = 'block';
+            document.getElementById('questionBankSection').style.display = 'none';
+        }
+
+        function showQuestionBank() {
+            document.getElementById('solverSection').style.display = 'none';
+            document.getElementById('questionBankSection').style.display = 'block';
+        }
+
+        function solveExpression() {
             const expr = document.getElementById('expression').value;
-            const operation = document.getElementById('operation').value;
-            const response = await fetch('/solve', {
+
+            if (!expr) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Please enter an expression.</p>';
+                return;
+            }
+
+            fetch('http://127.0.0.1:5000/solve', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({expression: expr, operation: operation})
+                body: JSON.stringify({ expression: expr })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + data.error + '</p>';
+                } else {
+                    document.getElementById('result').innerHTML = '<p><strong>Result:</strong> ' + data.result + '</p>';
+                    document.getElementById('steps').innerHTML = '<strong>Steps:</strong><br>' + data.steps.join('<br>');
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
             });
-            const data = await response.json();
-            if (data.error) {
-                document.getElementById('result').innerText = 'Error: ' + data.error;
-            } else {
-                document.getElementById('result').innerText = 'Operation: ' + data.operation + '\nResult: ' + data.result;
-            }
+        }
+
+        function addToExpression(value) {
+            document.getElementById('expression').value += value;
+        }
+
+        function toggleKeyboard() {
+            const keyboard = document.querySelector('.keyboard');
+            keyboard.classList.toggle('hidden');
         }
     </script>
 </body>
