@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-width, initial-scale=1.0">
+    <title>Math Solver</title>
+</head>
+<body>
+    <h1>Math Expression Solver</h1>
+    <form id="solverForm">
+        <input type="text" id="expression" placeholder="Enter expression e.g. (2*x+1)^4">
+        <select id="operation">
+            <option value="expand">Expand</option>
+            <option value="simplify">Simplify</option>
+            <option value="factor">Factor</option>
+        </select>
+        <button type="button" onclick="solveExpression()">Solve</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        async function solveExpression() {
+            const expr = document.getElementById('expression').value;
+            const operation = document.getElementById('operation').value;
+            const response = await fetch('/solve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({expression: expr, operation: operation})
+            });
+            const data = await response.json();
+            if (data.error) {
+                document.getElementById('result').innerText = 'Error: ' + data.error;
+            } else {
+                document.getElementById('result').innerText = 'Operation: ' + data.operation + '\nResult: ' + data.result;
+            }
+        }
+    </script>
+</body>
+</html>
